@@ -1,0 +1,34 @@
+{
+    "name": "web",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon app.js",
+        "prettier_check": "prettier --check \"**/{*.jsx,*.js,*.scss,*.css}\"",
+        "prettier_fix": "prettier --write \"**/{*.jsx,*.js,*.scss,*.css}\"",
+        "eslint_check": "eslint --ext .jsx,.js .",
+        "eslint_fix": "eslint --fix --ext .jsx,.js ."
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.0",
+        "mongoose": "^7.0.4",
+        "multer": "^1.4.4",
+        "multer-gridfs-storage": "^5.0.2",
+        "nodemon": "^2.0.22"
+    },
+    "devDependencies": {
+        "eslint": "^8.24.0",
+        "eslint-config-google": "^0.14.0",
+        "eslint-config-prettier": "^8.5.0",
+        "nodemon": "^2.0.20",
+        "prettier": "^2.7.1"
+    }
+}
