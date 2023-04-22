@@ -1,8 +1,8 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const https = require("../helper/https/Https");
-const User =  require("../models/ModelUser")
-
+const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const saveToken = require("../utils/jwtToken");
+const User = require("../models/ModelUser");
 exports.getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -19,61 +19,44 @@ exports.getUserProfile = async (req, res) => {
   }
 };
 
-exports.register = async (req, res) => {
+exports.register = catchAsyncErrors(async (req, res) => {
   try {
-    const { username, password, email, avatar } = req.body;
-    if (!(username && email && password)) {
-      https.fail(res, "Missing username or password");
+    const { username, password, email, avatar, role } = req.body;
+    if (role && role.toLowerCase() === 'admin') {
+      return https.fail(res, "Registration with 'admin' role is not allowed");
+    }
+    if (!username || !email || !password) {
+      return https.fail(res, "Missing username, email, or password");
     }
     const oldUser = await User.findOne({ email });
     if (oldUser) {
-      https.fail(res, "Username already taken!");
+      return https.fail(res, "Username already taken!");
     }
-    const encryptedPassword = await bcrypt.hash(password, 10);
+    const encryptedPassword = bcrypt.hashSync(password, 10);
 
     const user = await User.create({
-      username: username.toLowerCase(),
+      username,
       password: encryptedPassword,
-      email: email.toLowerCase(),
-      avatar
+      email,
+      avatar,
     });
-
-    // create token
-    const token = jwt.sign(
-      { user_id: user._id, username },
-      process.env.TOKEN_KEY,
-      {
-        expiresIn: 900,
-      }
-    );
-    user.token = token;
-    https.success(res, user, "Create user successfully!")
+    await saveToken(user, 201, res);
   } catch (error) {
     console.log("error", error);
   }
-};
-
-exports.login = async (req, res) => {
+});
+exports.login = catchAsyncErrors(async (req, res) => {
   try {
     const { username, password } = req.body;
-    if (!(username && password)) {
-      https.fail(res, {}, "Username and password is required");
+    if (!username || !password) {
+      return https.fail(res, "Username and password is required");
     }
     const user = await User.findOne({ username });
-    if (user && (await bcrypt.compare(password, user.password))) {
-      // create token
-      const token = jwt.sign(
-        { user_id: user._id, username },
-        process.env.TOKEN_KEY,
-        {
-          expiresIn: 900,
-        }
-      );
-      user.token = token;
-      https.success(res, user, "Login successfully!");
+    if (user && bcrypt.compareSync(password, user.password)) {
+      return saveToken(user, 200, res);
     }
-    https.fail(res, {}, "Invalid Credentials");
+    return https.fail(res, "Invalid Credentials");
   } catch (error) {
     console.log(error.message);
   }
-};
+});

@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const bodyParser = require("body-parser");
 const connectDB = require("./database/connectDB");
@@ -7,6 +8,7 @@ connectDB();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(require("./routes"));
 const PORT = process.env.PORT || 5000;
 

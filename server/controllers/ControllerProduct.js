@@ -1,15 +1,21 @@
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
-const https = require("../helper/https/Https")
+// const https = require("../helper/https/Https");
 const Products = require("../models/ModelProduct");
 // const ApiCommon = require("../utils/ApiCommon");
-exports.createProduct = () => catchAsyncErrors(async(req, res, next) => {
-  
-})
-exports.getAdminAllProduct = () =>
-  catchAsyncErrors(async (req, res, next) => {
-    const products = await Products.find();
-    https.success(res, products, "get all products admin successfully!")
+exports.createProduct = () => catchAsyncErrors(async (req, res, next) => {});
+
+
+
+// Get All Product (Admin)
+exports.getAdminAllProduct = catchAsyncErrors(async (req, res, next) => {
+  const products = await Products.find();
+  res.status(200).json({
+    success: true,
+    products,
   });
+});
+
+
 exports.getAllProduct = async (req, res, next) => {
   const resultPerPage = 8;
 
