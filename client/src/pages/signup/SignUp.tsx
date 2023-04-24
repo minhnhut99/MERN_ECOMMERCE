@@ -27,7 +27,7 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -50,28 +50,70 @@ export default function SignIn() {
           }}
         >
           <Typography component="h1" variant="h5">
-            Sign in
+            SIGN UP
           </Typography>
           <Box component="form" onSubmit={handleSubmit}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
+              size='small'
+              label="Email"
               name="email"
-              autoComplete="email"
+              autoComplete='email'
               autoFocus
             />
             <TextField
               margin="normal"
               required
               fullWidth
+              size='small'
+              label="Username"
+              name="username"
+              autoComplete='username'
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              size='small'
               name="password"
               label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              size='small'
+              name="password"
+              label="Confirm password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              size='small'
+              name="password"
+              label="Phone"
+              type="text"
+              autoComplete="phone"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              size='small'
+              name="password"
+              label="Address"
+              type="text"
+              autoComplete="address"
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

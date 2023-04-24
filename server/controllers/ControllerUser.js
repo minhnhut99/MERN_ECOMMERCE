@@ -21,7 +21,7 @@ exports.getUserProfile = async (req, res) => {
 
 exports.register = catchAsyncErrors(async (req, res) => {
   try {
-    const { username, password, email, avatar, role } = req.body;
+    const { username, password, email, avatar, role, phone, address } = req.body;
     if (role && role.toLowerCase() === 'admin') {
       return https.fail(res, "Registration with 'admin' role is not allowed");
     }
@@ -39,6 +39,8 @@ exports.register = catchAsyncErrors(async (req, res) => {
       password: encryptedPassword,
       email,
       avatar,
+      address,
+      phone
     });
     await saveToken(user, 201, res);
   } catch (error) {

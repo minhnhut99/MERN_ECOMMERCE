@@ -19,6 +19,14 @@ const userSchema = new Schema({
     trim: true,
     unique: true,
   },
+  phone: {
+    type: String,
+    require: true,
+  },
+  address: {
+    type: String,
+    require: true,
+  },
   password: {
     type: String,
     minLength: [8, "Password must be at least 8 characters"],
